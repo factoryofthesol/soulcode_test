@@ -1,10 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-
-from home.forms import LoginForm, RegistrationForm, UserPasswordChangeForm, UserPasswordResetForm, UserSetPasswordForm
-from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetView, PasswordResetConfirmView
 from django.contrib.auth import logout
-
 from django.views.generic import CreateView
 
 from django.contrib.auth.decorators import login_required
@@ -78,32 +74,6 @@ def profile(request):
         'segment': 'profile'
     }
     return render(request, 'pages/profile.html', context)
-
-# Authentication
-class UserLoginView(LoginView):
-  template_name = 'accounts/sign-in.html'
-  form_class = LoginForm
-
-class UserRegistration(CreateView):
-   template_name = 'accounts/sign-up.html'
-   form_class = RegistrationForm
-   success_url = "/accounts/login/"
-
-def logout_view(request):
-  logout(request)
-  return redirect('/accounts/login/')
-
-class UserPasswordResetView(PasswordResetView):
-  template_name = 'accounts/password_reset.html'
-  form_class = UserPasswordResetForm
-
-class UserPasswordResetConfirmView(PasswordResetConfirmView):
-  template_name = 'accounts/password_reset_confirm.html'
-  form_class = UserSetPasswordForm
-
-class UserPasswordChangeView(PasswordChangeView):
-  template_name = 'accounts/password_change.html'
-  form_class = UserPasswordChangeForm
 
 @api_view(["POST"])
 @authentication_classes([])

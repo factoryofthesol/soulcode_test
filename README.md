@@ -11,31 +11,34 @@ This repo is uses Poetry and installs the backend folder as required by Prefect 
 
 System Requirements include:
 - Python3.10
-- Poetry
+- Poetry & [Poetry Dotenv plugin](https://github.com/mpeteuil/poetry-dotenv-plugin) install using `poetry self add poetry-dotenv-plugin`
 - Node.js LTS(18) & Usage of [PNPM](https://pnpm.io/) is preferred as indicated by Package.json, it will save you disk space! Enable pnpm with `corepack enable` in a terminal running as administrator.
 - Install node_modules with `pnpm install`; this will automatically run `postinstall` script and activate git-hooks.
 
 ## Commitizen
-This repo uses [commitizen](https://github.com/commitizen/cz-cli) to keep along with [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/)
+This repo uses [commitizen](https://github.com/commitizen/cz-cli) to follow [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/)
 enabled with [gitmojis](https://gitmoji.dev/). Commits will be linted with [commitlint cli](https://github.com/conventional-changelog/commitlint) activated as a precommit git hook with [simple-git-hooks](https://github.com/toplenboren/simple-git-hooks) to provide a clean changelog of features.
 * To begin using these tools easily with your commits, just begin by typing `pnpm commit`
 
+## References
+This project is adapted from [django-prefect-example](https://github.com/abrookins/django-prefect-example), [django-cookiecutter](https://github.com/cookiecutter/cookiecutter-django), [django-step-by-step](https://github.com/briancaffey/django-step-by-step), and [prefect-docker-compose](https://github.com/rpeden/prefect-docker-compose) to fit best practices of soulcode.
+Include [soft-dashboard-ui](https://github.com/app-generator/django-soft-ui-dashboard) to visualize data from DB quickly using [Chart.js](https://www.chartjs.org/docs/3.5.0/). 
 ## Project structure - Python
 ```
 .
 ├── README.md
 ├── .env.example
-├── Makefile
+├── Makefile - All commands used in repo, add new ones here to and type less.
 ├── backend
 │   ├── __init__.py
 │   ├── manage.py
-│   ├── config
-│   ├── notebooks
-│   ├── www
+│   ├── config - Main project API router and URLs for frontend.
+│   ├── notebooks - Using docker-compose we can run jupyter notebooks to interact with Django ORM and Apps.
+│   ├── www - Frontend templates as defined by soft-ui
 │   └── apps
-|       ├── core
-|       ├── users
-│       └── workflows
+|       ├── core - contains templatetags/views for soft-dashboard and config for Celery dev environment, requestlog middleware.
+|       ├── users - django-allauth logic for user detail views and models.
+│       └── workflows - `prefect cli models and django management command for running prefect flows within django environment.`
 │           ├── __init__.py
 │           ├── apps.py
 │           ├── management
@@ -52,10 +55,10 @@ enabled with [gitmojis](https://gitmoji.dev/). Commits will be linted with [comm
 
 The important parts for our consideration are:
 
-- The Prefect flow: `myapi/workflows/test_flow.py`
-- An example Deployment definition for the flow: `myapi/workflows/test_flow-deployment.py`
-- A Django management command for running Prefect CLI commands within a Django environment: `myapi/workflows/management/commands/prefectcli.py`
-- Django views that demonstrate how to run the flow: `myapi/myapi/views.py`
+- The Prefect flow: `backend/apps/workflows/test_flow.py`
+- An example Deployment definition for the flow: `backend/apps/workflows/test_flow-deployment.py`
+- A Django management command for running Prefect CLI commands within a Django environment: `backend/apps/workflows/management/commands/prefectcli.py`
+- Django views that demonstrate how to run the flow: `backend/config/views.py`
 
 You can read these files in depth to see how they work. This README will
 walk you through _using_ the bundled management command and example Django
@@ -92,7 +95,7 @@ Deployment for the example flow.
 ## Create a Deployment
 
 This example includes an example Deployment YAML file in
-`workflows/example-deployment.yaml`, but this is just so you can see a working
+`backend/apps/workflows/example-deployment.yaml`, but this is just so you can see a working
 file. **You will need to build your own Deployment YAML for this example.**
 
 You should build your own Deployment YAML by running the following command
@@ -130,7 +133,7 @@ from a Django view.
 
 ### The code
 
-If you look in the file `config/views.py`, you'll see the following Django view:
+If you look in the file `backend/config/views.py`, you'll see the following Django view:
 
 ```python
 from django.http import HttpResponse
@@ -182,7 +185,7 @@ You can schedule a flow to run outside the current Python process using
 a Deployment. Once you've created a deployment for your flow, you can use
 the `run_deployment()` helper to schedule a flow run.
 
-Once again in the `config/views.py` file, you'll see the following Django view:
+Once again in the `backend/config/views.py` file, you'll see the following Django view:
 
 ```python
 from django.http import HttpResponse
