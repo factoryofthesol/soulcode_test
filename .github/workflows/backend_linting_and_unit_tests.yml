@@ -1,0 +1,59 @@
+name: Backend / Unit Tests
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  lint-backend-code:
+    name: Lint and test backend python code
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+
+    strategy:
+      matrix:
+        python-version: [3.9.13]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Poetry
+        run: pipx install poetry
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "poetry"
+          cache-dependency-path: '**/poetry.lock'
+      - name: Install dependencies
+        run: |
+          cd backend && poetry install --no-interaction --no-root --with dev
+
+      - name: Code formatting check with Black
+        run: |
+          cd backend
+          poetry run black . --check
+
+      - name: Run pytest tests
+        run: |
+          cd backend
+          poetry run python -V
+          poetry run pytest .

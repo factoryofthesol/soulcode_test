@@ -1,0 +1,10 @@
+{
+  "dockerComposeFile": "../docker-compose.devcontainer.yaml",
+  "service": "backend",
+  "shutdownAction": "stopCompose",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "version": "latest"
+    }
+  }
+}

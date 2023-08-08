@@ -1,0 +1,7 @@
+media
+.local-env
+.github
+.pytest_cache
+.vscode
+node_modules
+docs
