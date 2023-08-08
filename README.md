@@ -1,9 +1,26 @@
+
 # Marvin Test repo
 
 This project contains an example Django application configured
 to use [Prefect 2.0](https://prefect.io) for workflows and tasks.
 
-## Project structure
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+
+# Setup
+This repo is uses Poetry and installs the backend folder as required by Prefect to use Django Apps as dependencies.
+
+System Requirements include:
+- Python3.10
+- Poetry
+- Node.js LTS(18) & Usage of [PNPM](https://pnpm.io/) is preferred as indicated by Package.json, it will save you disk space! Enable pnpm with `corepack enable` in a terminal running as administrator.
+- Install node_modules with `pnpm install`; this will automatically run `postinstall` script and activate git-hooks.
+
+## Commitizen
+This repo uses [commitizen](https://github.com/commitizen/cz-cli) to keep along with [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/)
+enabled with [gitmojis](https://gitmoji.dev/). Commits will be linted with [commitlint cli](https://github.com/conventional-changelog/commitlint) activated as a precommit git hook with [simple-git-hooks](https://github.com/toplenboren/simple-git-hooks) to provide a clean changelog of features.
+* To begin using these tools easily with your commits, just begin by typing `pnpm commit`
+
+## Project structure - Python
 ```
 .
 ├── README.md
@@ -43,14 +60,6 @@ The important parts for our consideration are:
 You can read these files in depth to see how they work. This README will
 walk you through _using_ the bundled management command and example Django
 views.
-
-## Setup
-This repo is uses Poetry and installs the backend folder as required by Prefect to use Django Apps as dependencies.
-
-System Requirements include:
-* Python3.10
-* Poetry
-* Node.js LTS(18)
 
 Next, **set up Django**. This example assumes you are familiar with the setup
 that Django requires, like running initial migrations and creating a superuser.
@@ -173,7 +182,7 @@ You can schedule a flow to run outside the current Python process using
 a Deployment. Once you've created a deployment for your flow, you can use
 the `run_deployment()` helper to schedule a flow run.
 
-Once again in the `myapi/views.py` file, you'll see the following Django view:
+Once again in the `config/views.py` file, you'll see the following Django view:
 
 ```python
 from django.http import HttpResponse
