@@ -80,7 +80,7 @@ poetry-prefect-agent:
 	cd backend && poetry run python manage.py prefectcli agent start -q 'default'
 ## Build Prefect example deployment
 poetry-prefect-build:
-	cd backend && poetry run python manage.py prefectcli deployment build backend/workflows/test_flow.py:test_flow --name test-flow
+	cd backend && poetry run python manage.py prefectcli deployment build backend/apps/workflows/test_flow.py:test_flow --name test-flow
 ## Deploy Prefect deployment definition
 poetry-prefect-deploy:
 	cd backend && poetry run python manage.py prefectcli deployment apply test_flow-deployment.yaml
